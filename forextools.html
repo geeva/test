@@ -18,21 +18,16 @@
 		#payment{
 			text-decoration:underline;
 		}
-		#transaction_times_table{
-			border:3px solid;
-			text-align:center;
-		}
-		#transaction_times_table td{
-			padding:5px 10px;
-			border:1px solid;
-		}
 		#time{
 			font-size:20;
 			font-weight:bold;
 		}
-		table{
-			margin:0px 20px 40px 20px;
-			border-spacing:0px;
+		#transaction_times_table{
+			text-align:center;
+		}
+		table th{
+			text-align:center;
+			font-size:large;
 		}
 	</style>
 	<!-- <script>
@@ -85,35 +80,42 @@
 			</tr>
 		</table>
 	</form>
-	<div class="">
-		<table id="transaction_times_table">
-			<tr id="title">
-				<td>城市</td>
-				<td>开市时间</td>
-				<td>闭市时间</td>
-			</tr>
-			<tr id="sydney">
-				<td>悉尼</td>
-				<td>7:00</td>
-				<td>15:00</td>
-			</tr>
-			<tr id="tokyo">
-				<td>东京</td>
-				<td>8:00</td>
-				<td>16:00</td>
-			</tr>
-			<tr id="europe">
-				<td>欧洲</td>
-				<td>16:00</td>
-				<td>00:00</td>
-			</tr>
-			<tr id="us">
-				<td>美洲</td>
-				<td>20:00</td>
-				<td>05:00</td>
-			</tr>
-		</table>
+	<div class="container">
+		<div class="table-responsive">
+			<table id="transaction_times_table" class="table table-bordered">
+				<thead id="title">
+					<tr>
+						<th >城市</th>
+						<th>开市时间</th>
+						<th>闭市时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="sydney">
+						<td>悉尼</td>
+						<td>7:00</td>
+						<td>15:00</td>
+					</tr>
+					<tr id="tokyo">
+						<td>东京</td>
+						<td>8:00</td>
+						<td>16:00</td>
+					</tr>
+					<tr id="europe">
+						<td>欧洲</td>
+						<td>16:00</td>
+						<td>00:00</td>
+					</tr>
+					<tr id="us">
+						<td>美洲</td>
+						<td>20:00</td>
+						<td>05:00</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
+</body>
 	<script language="JavaScript">
 		function calculate(){
 			var leverage = document.loandata.leverage.value;
@@ -176,22 +178,31 @@
 			var date = new Date();
 			var hour = date.getHours();
 			document.getElementById('transaction_times_table').style.background="#ffffff";
+			document.getElementById('transaction_times_table').style.fontWeight="none";
+			document.getElementById('transaction_times_table').style.fontSize="inherit";
 			if(hour>=7&&hour<15){
-				document.getElementById('sydney').style.background="green";
+				document.getElementById('sydney').style.background="#6FB7B7";
+				document.getElementById('sydney').style.fontWeight="bold";
+				document.getElementById('sydney').style.fontSize="large";
 			}
 			if(hour>=8&&hour<16){
-				document.getElementById('tokyo').style.background="green";
+				document.getElementById('tokyo').style.background="#6FB7B7";
+				document.getElementById('tokyo').style.fontWeight="bold";
+				document.getElementById('tokyo').style.fontSize="large";
 			}
 			if(hour>=16&&hour<24){
-				document.getElementById('europe').style.background="green";
+				document.getElementById('europe').style.background="#6FB7B7";
+				document.getElementById('europe').style.fontWeight="bold";
+				document.getElementById('europe').style.fontSize="large";
 			}
 			if(hour>=20||hour<4){
-				document.getElementById('us').style.background="green";
+				document.getElementById('us').style.background="#6FB7B7";
+				document.getElementById('us').style.fontWeight="bold";
+				document.getElementById('us').style.fontSize="large";
 			}
 			setTimeout("trade_hours();", 1000);
 		}	
+		showtime();
+		trade_hours();
 	</script>
-	<script language="JavaScript">showtime();</script>
-	<script language="JavaScript">trade_hours();</script>
-</body>
 </html>
