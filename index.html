@@ -1,1 +1,197 @@
-<h1>123</h1>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>成本控制</title>
+	<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!--兼容移动端 
+	width 属性控制设备的宽度
+	initial-scale=1.0 确保网页加载时，以 1:1 的比例呈现，不会有任何的缩放
+	maximum-scale=1.0 user-scalable=no 这样禁用缩放功能后，用户只能滚动屏幕，就能让您的网站看上去更像原生应用的感觉
+	-->
+	<style>
+		.result{
+			font-weight:bold;
+		}
+		#payment{
+			text-decoration:underline;
+		}
+		#transaction_times_table{
+			border:3px solid;
+			text-align:center;
+		}
+		#transaction_times_table td{
+			padding:5px 10px;
+			border:1px solid;
+		}
+		#time{
+			font-size:20;
+			font-weight:bold;
+		}
+		table{
+			margin:0px 20px 40px 20px;
+			border-spacing:0px;
+		}
+	</style>
+	<!-- <script>
+		for(i=0,j=1,k=0,fib=0;i<50;i++,fib=j+k,j=k,k=fib){
+		document.write("Fib("+i+")="+fib);
+		document.write("<br>");
+		}
+	</script> -->
+</head>
+
+<body>
+	<span id="time"></span>
+	<h4>单笔成本控制——外汇</h4>
+	<form name="loandata">
+		<table>
+			<tr>
+				<td>输入信息:</td>
+			</tr>
+			<tr>
+				<td>1) 杠杆：</td>
+				<td><input type="text" name="leverage" onchange="calculate();"></td>
+			</tr>
+			<tr>
+				<td>2) 净值：</td>
+				<td><input type="text" name="netWorth" onchange="calculate();"></td>
+			</tr>
+			<tr>
+				<td>3) 计划止损点数:</td>
+				<td><input type="text" name="stopLoss_pips" onchange="calculate();"></td>
+			</tr>
+			<tr>
+				<td>4) 计划亏损金额：</td>
+				<td><input type="text" name="stopLoss_amount" onchange="calculate();"></td>
+			</tr>
+			<tr>
+				<td>5) 计划亏损金额百分比：</td>
+				<td><input type="text" name="stopLoss_amount_percent" onchange="calculate();"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="button" value="Compute" onclick="calculate();"></td>
+			</tr>
+			<tr>
+				<td>6) 交易手数:</td>
+				<td><span class="result" id="lots"></span></td>
+			</tr>
+			<tr>
+				<td>7) 占用保证金:</td>
+				<td><span class="result" id="collateral"></span></td>
+			</tr>
+		</table>
+	</form>
+	<div class="">
+		<table id="transaction_times_table">
+			<tr id="title">
+				<td>城市</td>
+				<td>开市时间</td>
+				<td>闭市时间</td>
+			</tr>
+			<tr id="sydney">
+				<td>悉尼</td>
+				<td>7:00</td>
+				<td>15:00</td>
+			</tr>
+			<tr id="tokyo">
+				<td>东京</td>
+				<td>8:00</td>
+				<td>16:00</td>
+			</tr>
+			<tr id="europe">
+				<td>欧洲</td>
+				<td>16:00</td>
+				<td>00:00</td>
+			</tr>
+			<tr id="us">
+				<td>美洲</td>
+				<td>20:00</td>
+				<td>05:00</td>
+			</tr>
+		</table>
+	</div>
+	<script language="JavaScript">
+		function calculate(){
+			var leverage = document.loandata.leverage.value;
+			var netWorth = document.loandata.netWorth.value;
+			var stopLoss_pips = document.loandata.stopLoss_pips.value;
+			var stopLoss_amount = document.loandata.stopLoss_amount.value;
+			var stopLoss_amount_percent = document.loandata.stopLoss_amount_percent.value;	
+			if(!stopLoss_amount_percent){
+				x = stopLoss_amount/stopLoss_pips*0.1;		
+			}else{
+				x = netWorth*stopLoss_amount_percent/stopLoss_pips*0.1/100;
+			}				
+			var lots = document.getElementById("lots");
+			var collateral = document.getElementById("collateral");
+			lots.innerHTML = x;
+			collateral.innerHTML = 100000/leverage*x;			
+		}
+		function showtime(){
+			var today,hour,second,minute,year,month,date;
+			var strDate ;
+			today=new Date();
+			var n_day = today.getDay();
+			switch (n_day){
+				case 0:{
+				  strDate = "星期日"
+				}break;
+				case 1:{
+				  strDate = "星期一"
+				}break;
+				case 2:{
+				  strDate ="星期二"
+				}break;
+				case 3:{
+				  strDate = "星期三"
+				}break;
+				case 4:{
+				  strDate = "星期四"
+				}break;
+				case 5:{
+				  strDate = "星期五"
+				}break;
+				case 6:{
+				  strDate = "星期六"
+				}break;
+				case 7:{
+				  strDate = "星期日"
+				}break;
+			}
+			year = today.getYear()+1900;
+			month = today.getMonth()+1;
+			date = today.getDate();
+			hour = today.getHours();
+			minute =today.getMinutes();
+			second = today.getSeconds();
+			document.getElementById('time').innerHTML = year + "年" + month + "月" + date + "日" + strDate +" " + hour + ":" + minute + ":" + second; //显示时间
+			setTimeout("showtime();", 1000); //设定函数自动执行时间为 1000 ms(1 s)
+			
+		}	
+		function trade_hours(){
+			var date = new Date();
+			var hour = date.getHours();
+			document.getElementById('transaction_times_table').style.background="#ffffff";
+			if(hour>=7&&hour<15){
+				document.getElementById('sydney').style.background="green";
+			}
+			if(hour>=8&&hour<16){
+				document.getElementById('tokyo').style.background="green";
+			}
+			if(hour>=16&&hour<24){
+				document.getElementById('europe').style.background="green";
+			}
+			if(hour>=20||hour<4){
+				document.getElementById('us').style.background="green";
+			}
+			setTimeout("trade_hours();", 1000);
+		}	
+	</script>
+	<script language="JavaScript">showtime();</script>
+	<script language="JavaScript">trade_hours();</script>
+</body>
+</html>
