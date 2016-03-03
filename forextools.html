@@ -167,12 +167,24 @@
 			year = today.getYear()+1900;
 			month = today.getMonth()+1;
 			date = today.getDate();
-			hour = today.getHours();
-			minute =today.getMinutes();
-			second = today.getSeconds();
+			if(today.getHours()<10){
+				hour = "0"+String(today.getHours());
+			}else{
+				hour = today.getHours();
+			}
+			if(today.getMinutes()<10){
+				minute ="0"+String(today.getMinutes());
+			}else{
+				minute =today.getMinutes();
+			}
+			if(today.getSeconds()<10){
+				second = "0"+String(today.getSeconds());
+			}else{
+				second = today.getSeconds();				
+			}			
 			document.getElementById('time').innerHTML = year + "年" + month + "月" + date + "日" + strDate +" " + hour + ":" + minute + ":" + second; //显示时间
 			setTimeout("showtime();", 1000); //设定函数自动执行时间为 1000 ms(1 s)
-			
+			//alert("0"+String(today.getSeconds()));			
 		}	
 		function trade_hours(){
 			var date = new Date();
@@ -203,6 +215,6 @@
 			setTimeout("trade_hours();", 1000);
 		}	
 		showtime();
-		trade_hours();
+		trade_hours();		
 	</script>
 </html>
